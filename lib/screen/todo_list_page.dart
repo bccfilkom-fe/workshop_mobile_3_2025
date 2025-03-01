@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app_simple/screen/add_todo_page.dart';
+import 'package:todo_app_simple/screen/profile_page.dart';
 
 class TodoListPage extends StatefulWidget {
   const TodoListPage({super.key});
@@ -22,6 +23,17 @@ class _TodoListPageState extends State<TodoListPage> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
+            },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: navigateToAddTodoPage,
