@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app_simple/screen/login_page.dart';
-import 'package:todo_app_simple/screen/todo_list_page.dart';
+import 'package:todo_app_simple/features/auth/view/login_page.dart';
+import 'package:todo_app_simple/features/todo/view/home_page.dart';
 
 void main() {
   runApp(MyApp());

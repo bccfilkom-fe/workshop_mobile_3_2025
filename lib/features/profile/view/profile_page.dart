@@ -19,9 +19,16 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
       ),
       body: Center(
-        child: Text(
-          "Email: $email",
-          style: const TextStyle(fontSize: 18),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Email: $email",
+              style: const TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(onPressed: () {}, child: Text('Logout'))
+          ],
         ),
       ),
     );
