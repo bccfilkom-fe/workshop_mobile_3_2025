@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app_simple/core/utils/snackbar_helper.dart';
+import 'package:todo_app_simple/features/auth/bloc/auth_bloc.dart';
+import 'package:todo_app_simple/features/auth/bloc/auth_event.dart';
+import 'package:todo_app_simple/features/auth/bloc/auth_state.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -40,9 +45,24 @@ class _SignupPageState extends State<SignupPage> {
               obscureText: true,
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: signup,
-              child: const Text('Sign Up'),
+            BlocConsumer<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthLoading) {
+                  return CircularProgressIndicator();
+                }
+
+                return ElevatedButton(
+                    onPressed: signup, child: const Text('Sign up'));
+              },
+              listener: (context, state) {
+                if (state is AuthSuccess) {
+                  SnackbarHelper.showSuccessMessage(
+                      context, "Berhasil mendaftar");
+                } else if (state is AuthFailure) {
+                  SnackbarHelper.showFailMessage(
+                      context, "Gagal mendaftar: $state.error");
+                }
+              },
             ),
           ],
         ),
@@ -50,5 +70,21 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  void signup() {}
+  void signup() {
+    String email = emailController.text;
+    String password = passwordController.text;
+    String confirmPassword = confirmPasswordController.text;
+
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      SnackbarHelper.showFailMessage(context, "Semua field harus diisi!");
+      return;
+    }
+
+    if (password != confirmPassword) {
+      SnackbarHelper.showFailMessage(context, "Password tidak sama!");
+      return;
+    }
+
+    context.read<AuthBloc>().add(RegisterRequested(email, password));
+  }
 }
